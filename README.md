@@ -1,2 +1,3 @@
-# publicsuffix
-Public suffix list based on data from https://publicsuffix.org/
+# Publicsuffix
+
+A rust port of publicsuffix, original `https://pkg.go.dev/golang.org/x/net/publicsuffix`

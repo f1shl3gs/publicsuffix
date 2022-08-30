@@ -1,0 +1,7 @@
+[package]
+name = "publicsuffix"
+version = "0.1.0"
+edition = "2021"
+description = "Public suffix list based on data from https://publicsuffix.org/"
+
+[dependencies]
