@@ -1,4 +1,4 @@
-const version: &str = "publicsuffix.org's public_suffix_list.dat, git revision 3c213aab32b3c014f171b1673d4ce9b5cd72bf1c (2021-11-26T23:05:53Z)";
+pub const VERSION: &str = "publicsuffix.org's public_suffix_list.dat, git revision 3c213aab32b3c014f171b1673d4ce9b5cd72bf1c (2021-11-26T23:05:53Z)";
 
 pub const NODES_BITS_CHILDREN: u32 = 10;
 pub const NODES_BITS_ICANN: u32 = 1;
@@ -17,7 +17,7 @@ pub const NODE_TYPE_EXCEPTION: u32 = 1;
 pub const NUM_TLD: u32 = 1504;
 
 // Text is the combined text of all labels.
-pub const TEXT: &'static str = "9guacuiababia-goracleaningroks-theatree164-balsfjordd-dnshome-we\
+pub const TEXT: &str = "9guacuiababia-goracleaningroks-theatree164-balsfjordd-dnshome-we\
 bservercellikes-piedmonticellocalzoneastasiaetnaamesjevuemielnod\
 umcpeastcoastaldefenceastus2038birdartcenterprisecloudaccesscamb\
 ridgeiseiroumuenchenishiazaindielddanuorrindigenamsosnowiecherni\
@@ -536,7 +536,7 @@ ketingliwicexnbayxz";
 //	[ 1 bits] ICANN bit
 //	[15 bits] text index
 //	[ 6 bits] text length
-pub const nodes: [u32; 9345] = [
+pub const NODES: [u32; 9345] = [
     0x330b03, 0x3b6e44, 0x2e8c86, 0x350003, 0x350006, 0x392c06, 0x3b9283, 0x21a084, 0x3deb07,
     0x2e88c8, 0x1a000c2, 0x1f42f07, 0x37f0c9, 0x2ddc4a, 0x2ddc4b, 0x233b83, 0x236ac5, 0x2213c82,
     0x3d6204, 0x2c8983, 0x231c05, 0x2601ac2, 0x367443, 0x2a2ffc4, 0x201ac5, 0x2e06482, 0x20648e,
@@ -1578,7 +1578,7 @@ pub const nodes: [u32; 9345] = [
 //	[ 2 bits] node type
 //	[14 bits] high nodes index (exclusive) of children
 //	[14 bits] low nodes index (inclusive) of children
-pub const children: [u32; 670] = [
+pub const CHILDREN: [u32; 670] = [
     0x0, 0x10000000, 0x20000000, 0x40000000, 0x50000000, 0x60000000, 0x179c5e0, 0x17a05e7,
     0x17a45e8, 0x17c45e9, 0x191c5f1, 0x1930647, 0x194464c, 0x1958651, 0x1974656, 0x199865d,
     0x19b0666, 0x1a0066c, 0x1a04680, 0x1a3c681, 0x1a4068f, 0x1a58690, 0x1a5c696, 0x1a60697,

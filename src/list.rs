@@ -1,10 +1,12 @@
+use std::cmp::Ordering;
+
 use super::table::{
-    children, nodes, CHILDREN_BITS_HI, CHILDREN_BITS_LO, CHILDREN_BITS_NODE_TYPE,
-    CHILDREN_BITS_WILDCARD, NODES_BITS_CHILDREN, NODES_BITS_ICANN, NODES_BITS_TEXT_LENGTH,
-    NODES_BITS_TEXT_OFFSET, NODE_TYPE_EXCEPTION, NODE_TYPE_NORMAL, NUM_TLD, TEXT,
+    CHILDREN, CHILDREN_BITS_HI, CHILDREN_BITS_LO, CHILDREN_BITS_NODE_TYPE, CHILDREN_BITS_WILDCARD,
+    NODES, NODES_BITS_CHILDREN, NODES_BITS_ICANN, NODES_BITS_TEXT_LENGTH, NODES_BITS_TEXT_OFFSET,
+    NODE_TYPE_EXCEPTION, NODE_TYPE_NORMAL, NUM_TLD, TEXT,
 };
 
-const NOT_FOUND: u32 = 1 << 32 - 1;
+const NOT_FOUND: u32 = 1 << (32 - 1);
 
 pub fn effective_tld_plus_one(domain: &str) -> Option<&str> {
     if domain.starts_with('.') || domain.ends_with('.') || domain.contains("..") {
@@ -57,10 +59,10 @@ pub fn public_suffix(domain: &[u8]) -> (&[u8], bool) {
             break;
         }
 
-        let mut u = nodes[f as usize] >> (NODES_BITS_TEXT_OFFSET + NODES_BITS_TEXT_LENGTH);
+        let mut u = NODES[f as usize] >> (NODES_BITS_TEXT_OFFSET + NODES_BITS_TEXT_LENGTH);
         icann_node = u & ((1 << NODES_BITS_ICANN) - 1) != 0;
         u >>= NODES_BITS_ICANN;
-        u = children[(u & ((1 << NODES_BITS_CHILDREN) - 1)) as usize];
+        u = CHILDREN[(u & ((1 << NODES_BITS_CHILDREN) - 1)) as usize];
         lo = u & ((1 << CHILDREN_BITS_LO) - 1);
         u >>= CHILDREN_BITS_LO;
         hi = u & ((1 << CHILDREN_BITS_HI) - 1);
@@ -94,7 +96,7 @@ pub fn public_suffix(domain: &[u8]) -> (&[u8], bool) {
         return (&domain[(1 + li) as usize..], icann);
     }
 
-    return (&domain[suffix as usize..], icann);
+    (&domain[suffix as usize..], icann)
 }
 
 // find returns the index of the node in the range [lo, hi) whose label equals
@@ -105,21 +107,19 @@ fn find(label: &[u8], mut lo: u32, mut hi: u32) -> u32 {
         let mid = lo + (hi - lo) / 2;
         let s = node_label(mid);
 
-        if s < label {
-            lo = mid + 1;
-        } else if s == label {
-            return mid;
-        } else {
-            hi = mid;
+        match s.cmp(label) {
+            Ordering::Less => lo = mid + 1,
+            Ordering::Equal => return mid,
+            _ => hi = mid,
         }
     }
 
-    return NOT_FOUND;
+    NOT_FOUND
 }
 
 // node_label returns the label for the i'th node.
 fn node_label(i: u32) -> &'static [u8] {
-    let mut x = nodes[i as usize];
+    let mut x = NODES[i as usize];
     let len = x & ((1 << NODES_BITS_TEXT_LENGTH) - 1);
     x >>= NODES_BITS_TEXT_LENGTH;
     let offset = x & ((1 << NODES_BITS_TEXT_OFFSET) - 1);
